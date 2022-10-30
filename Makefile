@@ -1,4 +1,4 @@
-SRC_DIRS := . app app/window app/renderer app/event_manager slots common widgets
+SRC_DIRS := . app app/window app/renderer app/event_manager common widgets widgets/textures
 VPATH += $(SRC_DIRS)
 
 INC_DIRS := include
@@ -13,7 +13,7 @@ OBJ := $(addprefix $(BIN_DIR)/, $(patsubst %.cpp, %.o, $(notdir $(SRC))))
 CXX := g++
 CXX_FLAGS := $(addprefix -I, $(INC_DIRS)) $(addprefix -I, $(SRC_DIRS))
 
-CXX_FLAGS += -D _DEBUG -ggdb3 -std=c++20 -O2 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations\
+CXX_FLAGS += -D _DEBUG -ggdb3 -std=c++20 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations\
 -Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts -Wconditionally-supported\
 -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal -Wformat-nonliteral -Wformat-security\
 -Wformat-signedness -Wformat=2 -Winline -Wlogical-op -Wnon-virtual-dtor -Wopenmp-simd -Woverloaded-virtual\
@@ -22,7 +22,7 @@ CXX_FLAGS += -D _DEBUG -ggdb3 -std=c++20 -O2 -Wall -Wextra -Weffc++ -Waggressive
 -Wswitch-default -Wswitch-enum -Wsync-nand -Wundef -Wunreachable-code -Wunused -Wuseless-cast -Wvariadic-macros\
 -Wno-literal-suffix -Wno-missing-field-initializers -Wno-narrowing -Wno-old-style-cast -Wno-varargs -Wstack-protector\
 -fcheck-new -fsized-deallocation -fstack-protector -fstrict-overflow -flto-odr-type-merging -fno-omit-frame-pointer\
--Wlarger-than=8192 -Wstack-usage=8192 -pie -fPIE
+-Wlarger-than=8192 -Wstack-usage=8192 -pie -fPIE -fsanitize=address
 
 SDL_FLAGS := -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer
 

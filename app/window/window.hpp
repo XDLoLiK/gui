@@ -17,6 +17,9 @@ public:
 	Window& operator=(Window&& other);
 	Window(Window&& other);
 
+	void setName(const std::string& name);
+	void setGeometry(int w, int h);
+
 	void open();
 	void close();
 
@@ -30,7 +33,7 @@ private:
 
 	bool m_isOpened = false;
 	
-	mutable SDL_Window* m_realWindow = nullptr;
+	SDL_Window* m_realWindow = nullptr;
 };
 
 #endif // WINDOW_HPP

@@ -1,8 +1,11 @@
 #ifndef EVENT_HPP
 #define EVENT_HPP
 
+#include <SDL2/SDL.h>
+
+using Time        = uint32_t;
 using MouseButton = uint8_t;
-using Key = SDL_Keycode;
+using Key         = SDL_Keycode;
 
 class Event
 {

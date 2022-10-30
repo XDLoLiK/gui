@@ -44,6 +44,17 @@ Window::Window(Window&& other)
 	other.m_realWindow = nullptr;
 }
 
+void Window::setName(const std::string& name)
+{
+	m_name = name;
+}
+
+void Window::setGeometry(int w, int h)
+{
+	m_width  = w;
+	m_height = h;
+}
+
 void Window::open()
 {
 	if (m_isOpened)

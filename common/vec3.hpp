@@ -22,8 +22,6 @@ private:
 	long double m_x = 0.0;
 	long double m_y = 0.0;
 	long double m_z = 0.0;
-
-	long double m_length = 0.0;
 };
 
 Vec3 normalized(const Vec3 &vec);

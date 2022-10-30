@@ -3,7 +3,9 @@
 
 #include <SDL2/SDL.h>
 
+#include "rect.hpp"
 #include "window.hpp"
+#include "texture.hpp"
 
 class Renderer
 {
@@ -17,10 +19,13 @@ public:
 	Renderer& operator=(Renderer&& other);
 	Renderer(Renderer&& other);
 
+	bool setRenderTarget(Window* window);
+
 	void destroy();
 
-	void clear()   const;
-	void present() const;
+	void clear();
+	void present();
+	void copyTexture(const Texture* texture, const Rect& bounds);
 
 	SDL_Renderer* getRealRenderer() const;
 

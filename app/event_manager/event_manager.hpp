@@ -5,22 +5,43 @@
 #include <cassert>
 
 #include "event.hpp"
+#include "gvec.hpp"
 
 class Widget;
 
-class EventManager
+class ChildrenManager
+{
+public:
+	ChildrenManager();
+	~ChildrenManager();
+
+	void operator+=(Widget* widget);
+	void operator-=(Widget* widget);
+
+	void callOnHover    (const Vec2& coords);
+	void callOnMouseMove(const Vec2& motion);
+	void callOnButtonClick  (MouseButton button, const Vec2& coords);
+	void callOnButtonRelease(MouseButton button, const Vec2& coords);
+
+	void callOnKeyPress(Key key);
+	void callOnKeyRelease(Key key);
+	void callOnTick(Time time);
+
+protected:
+	std::vector<Widget*> m_widgets = {};
+};
+
+class EventManager : public ChildrenManager
 {
 public:
 	EventManager();
 	~EventManager();
 
-	void processEvent(const Event& event);
-
-	void operator+=(Widget* widget);
-	void operator-=(Widget* widget);
+	int getEvent();
+	void processEvent();
 
 private:
-	std::vector<Widget*> m_widgets = {};
+	Event m_event = Event();
 };
 
 #endif // EVENT_MANAGER_HPP

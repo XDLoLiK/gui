@@ -20,8 +20,6 @@ public:
 private:
 	long double m_x = 0.0;
 	long double m_y = 0.0;
-
-	long double m_length = 0.0;
 };
 
 Vec2 normalized(const Vec2 &vec);

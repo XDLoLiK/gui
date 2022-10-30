@@ -3,8 +3,7 @@
 Vec3::Vec3(long double x, long double y, long double z):
 	m_x(x),
 	m_y(y),
-	m_z(z),
-	m_length(sqrtl(powl(x, 2) + powl(y, 2) + powl(z, 2)))
+	m_z(z)
 {
 
 }
@@ -14,9 +13,6 @@ Vec3& Vec3::operator*=(long double scale)
 	m_x *= scale;
 	m_y *= scale;
 	m_z *= scale;
-
-	m_length = sqrtl(powl(m_x, 2) + powl(m_y, 2) + powl(m_z, 2));
-
 	return *this;
 }
 
@@ -43,7 +39,6 @@ Vec3 crossProduct(const Vec3& vec1, const Vec3& vec2)
 	long double newX = vec1.getY() * vec2.getZ() - vec1.getZ() * vec2.getY();
 	long double newY = vec1.getZ() * vec2.getX() - vec1.getX() * vec2.getZ();
 	long double newZ = vec1.getX() * vec2.getY() - vec1.getY() * vec2.getX();
-
 	return Vec3(newX, newY, newZ);
 }
 
@@ -52,9 +47,6 @@ Vec3& Vec3::operator+=(const Vec3& vec)
 	m_x += vec.getX();
 	m_y += vec.getY();
 	m_z += vec.getZ();
-
-	m_length = sqrtl(powl(m_x, 2) + powl(m_y, 2) + powl(m_z, 2));
-
 	return *this;
 }
 
@@ -70,9 +62,6 @@ Vec3& Vec3::operator-=(const Vec3& vec)
 	m_x -= vec.getX();
 	m_y -= vec.getY();
 	m_z -= vec.getZ();
-
-	m_length = sqrtl(powl(m_x, 2) + powl(m_y, 2) + powl(m_z, 2));
-
 	return *this;	
 }
 
@@ -90,17 +79,16 @@ Vec3 operator-(const Vec3& vec)
 
 void Vec3::normalize()
 {
-	m_x /= m_length;
-	m_y /= m_length;
-	m_z /= m_length;
-	m_length = 1;
+	long double len = this->getLength();
+	m_x /= len;
+	m_y /= len;
+	m_z /= len;
 }
 
 Vec3 normalized(const Vec3& vec)
 {
-	return Vec3(vec.getX() / vec.getLength(),
-		        vec.getY() / vec.getLength(),
-		        vec.getZ() / vec.getLength());
+	long double len = vec.getLength();
+	return Vec3(vec.getX() / len, vec.getY() / len, vec.getZ() / len);
 }
 
 long double Vec3::getX() const
@@ -120,7 +108,7 @@ long double Vec3::getZ() const
 
 long double Vec3::getLength() const
 {
-	return m_length;
+	return sqrtl(powl(m_x, 2) + powl(m_y, 2) + powl(m_z, 2));
 }
 
 long double cos(const Vec3& vec1, const Vec3& vec2)

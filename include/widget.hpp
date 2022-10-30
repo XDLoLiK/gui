@@ -2,43 +2,79 @@
 #define WIDGET_HPP
 
 #include "gvec.hpp"
-#include "slot.hpp"
 #include "rect.hpp"
+
+#include "event_manager.hpp"
+#include "texture_manager.hpp"
 
 class Widget
 {
-using Time = uint32_t;
-
 public:
 	Widget(Widget* parent = nullptr);
 	virtual ~Widget();
 
+	Widget& operator=(const Widget& other) = delete;
+	Widget(const Widget& other)            = delete;
+
+	void* operator new(size_t size);
+	void  operator delete(void* memptr);
+	void* operator new [](size_t size);
+	void  operator delete [](void* memptr);
+
 	void show();
 
-	virtual void draw(Time time)               = 0;
-	virtual Rect& bounds()                     = 0;
-	virtual bool intersects(const Vec2& point) = 0;
+	void setGeometry(const Rect& bounds);
+	void setGeometry(int x, int y, int w, int h);
 
-	virtual void addChild   (Widget* child) = 0;
-	virtual void removeChild(Widget* child) = 0;
+	bool isHidden() const;
+	void setHidden(bool val);
 
-	virtual const std::vector<Widget*>& getChildren() = 0;
-	virtual Widget* getParent()                       = 0;
+	bool isHolded() const;
+	void setHolded(bool val);
+
+	const Texture* getTexture() const;
+	void setTexture(const std::string& name);
+
+	const Rect& getBounds() const;
 
 public:
-	Slot<Vec2> onMouseMove = {};
+	virtual void draw()                        = 0;
+	virtual bool intersects(const Vec2& point) = 0;
 
-	Slot<Vec2, MouseButton> onButtonClick   = {};
-	Slot<Vec2, MouseButton> onButtonRelease = {};
+	virtual void addChild   (Widget* child)    = 0;
+	virtual void removeChild(Widget* child)    = 0;
 
-	Slot<Key> onKeyPress   = {};
-	Slot<Key> onKeyRelease = {};
+	virtual size_t getChildCount()             = 0;
+	virtual Widget* getChild(size_t pos)       = 0;
+	virtual Widget* getParent()                = 0;
 
-	Slot<Time> onTick = {};
+	virtual void onHover    (const Vec2& point)                         = 0;
+	virtual void onMouseMove(const Vec2& motion)                        = 0;
+	virtual void onButtonClick  (MouseButton button, const Vec2& point) = 0;
+	virtual void onButtonRelease(MouseButton button, const Vec2& point) = 0;
+
+	virtual void onKeyPress  (Key key) = 0;
+	virtual void onKeyRelease(Key key) = 0;
+	virtual void onTick(Time time)     = 0;
 
 protected:
-	Widget*         m_parent   = nullptr;
-	const Renderer* m_renderer = nullptr;
+	Widget* m_parent = nullptr;
+	bool m_isHidden  = true;
+	bool m_isHolded  = false;
+
+	Rect m_bounds = Rect(0, 0, 0, 0);
+	const Texture* m_texture = nullptr;
+};
+
+class ContainerWidget : public Widget
+{
+public:
+	ContainerWidget(Widget* parent = nullptr);
+	virtual ~ContainerWidget();
+
+protected:
+	ChildrenManager m_childrenManager = ChildrenManager();
+	std::vector<Widget*> m_children = {};
 };
 
 #endif // WIDGET_HPP

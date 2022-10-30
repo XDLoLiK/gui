@@ -1,29 +1,35 @@
 #ifndef BUTTON_HPP
 #define BUTTON_HPP
 
+#include "widget.hpp"
+
 class Button : public Widget
 {
 public:
-	Button(const std::string& name = "", int x = 0, int y = 0, 
-		                                 int w = 0, int h = 0):
-		m_name(name),
-		m_bounds(x, y, w, h)
-	{
+	Button(const std::string& text = "", Widget* parent = nullptr);
+	virtual ~Button();
 
-	}
+	virtual void draw()                        override;
+	virtual bool intersects(const Vec2& point) override;
 
-	~Button()
-	{
+	virtual void addChild   (Widget* child)    override;
+	virtual void removeChild(Widget* child)    override;
 
-	}
+	virtual size_t getChildCount()             override;
+	virtual Widget* getChild(size_t pos)       override;
+	virtual Widget* getParent()                override;
+
+	virtual void onHover    (const Vec2& point)                         override;
+	virtual void onMouseMove(const Vec2& motion)                        override;
+	virtual void onButtonClick  (MouseButton button, const Vec2& point) override;
+	virtual void onButtonRelease(MouseButton button, const Vec2& point) override;
+
+	virtual void onKeyPress  (Key key) override;
+	virtual void onKeyRelease(Key key) override;
+	virtual void onTick(Time time)     override;
 
 private:
 	std::string m_name = "";
-	Rect m_bounds = {};
-
-	std::vector<Widget*> m_children = {};
-
-	bool m_isClicked = false;
 };
 
 #endif // BUTTON_HPP
